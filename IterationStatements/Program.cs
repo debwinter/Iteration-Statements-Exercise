@@ -57,22 +57,36 @@
         {
             Console.WriteLine("How old are you?");
             var userAge = Console.ReadLine();
-            int.TryParse(userAge, out int age);
-            
-            return (age < 18) ? "Too young to vote!"
-                : (age >= 18) ? "Pokemon-GO to the polls!"
-                : "Politics is broken and so is this formula";
+            string message;
+            if (int.TryParse(userAge, out int age))
+            {
+                message = (age < 18) ? "Too young to vote!"
+                : "Pokemon-GO to the polls!";
+            }
+            else
+            {
+                message = "Politics is broken and so is this formula";
+            }
+            return message;
         }
 
         //Heatin Up Section:
         //Write a method to check if an integer(from the user) is in the range -10 to 10
-        public static bool CheckRange()
+        public static bool? CheckRange()
         {
             Console.Write("Enter a whole number: ");
             var userInput = Console.ReadLine();
-            int.TryParse(userInput, out int number);
+            bool? inRange;
+            if (int.TryParse(userInput, out int number))
+            {
+                inRange = number >= -10 && number <= 10;
+            }
+            else
+            {
+                inRange = null;
+            }
 
-            return number >= -10 && number <= 10;
+            return inRange;
         }
 
         //Write a method to display the multiplication table(from 1 to 12) of a given integer
@@ -101,7 +115,7 @@
             int a = 7;
             int b = -7;
 
-            Console.WriteLine($"Are {a} and {b} equal? " + (AreEqual(a,b) ? "Yes" : "No"));
+            Console.WriteLine($"Are {a} and {b} equal? " + (AreEqual(a, b) ? "Yes" : "No"));
 
             Console.WriteLine($"Is {a} even? " + (IsEven(a) ? "Yes" : "No"));
             Console.WriteLine($"Is {a} even or odd? " + EvenOrOdd(a));
@@ -111,8 +125,18 @@
 
             Console.WriteLine(VotingAge());
 
-            bool inRange = CheckRange();
-            Console.WriteLine("Is it in range? " + (inRange?"Yes":"No"));
+            bool? inRange = CheckRange();
+            string rangeMessage;
+            if (inRange.HasValue)
+            {
+
+                rangeMessage = (inRange ?? true) ? "Yes" : "No";
+            }
+            else
+            {
+                rangeMessage = "Unknown";
+            }
+            Console.WriteLine("Is it in range? " + rangeMessage);
 
             Console.WriteLine(MultTable(a));
         }
